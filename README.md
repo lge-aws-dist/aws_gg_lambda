@@ -1,41 +1,37 @@
-## 예제 코드 개발환경
+## Environment
 
-- DQ1 B0 Ubuntu
-- Python 2.7
-- Opencv
+  - LG8111 AI board(Ubuntu 18.04)
+  - Python 2.7
+  - Opencv
   - python 2.7: Opencv 3.2.0
   - c++: Opencv 4.1.2
 
 
-## 코드 구성
-
-- Lambda 등록 파일 및 폴더
+## Directory Description
   - greengrasssdk: AWS Greengrass SDK
-  - network: mtcnn, tiny-yolo, mobilenet 구동 코드
-  - greengrassML.py: AWS 동작을 위한 main code
-- S3 업로드 폴더
-  - models
-  - Lambda size제한으로 S3 에 업로드 및 사용
+  - network: functions required to inferece using mtcnn, tiny-yolo, mobilenet 
+  - greengrassML.py: Lambda function deployed by AWS Greengrass Group. After deploy on core device, it is called by runtime in AWS Greengrass core S/W
+
+   Note) Network model itself required to perform local inference are located in LG8111 board.
+      Please contace us via e-mail to get more information about LG8111 borad.(lge-aws-dist@lge.com)
 
 
-## 사용 방법
+## How to set AWS greengrass Group
 
-- Lambda upload 파일 압축
+  - zip Lambda function and upload it to AWS-Lambda Service
 
 ```
 $ zip -r greengrassML.zip greengrasssdk templates labels lib network greengrassML.py
 ```
 
-- LNE binary 압축 및 S3에 업로드
+  - Local Resource
 
 ```
-$ cd models
-$ zip -r network.zip *
+set Local Resource as /home/ubuntu/models
 ```
 
-- Local Resource의 Machine Learning local 경로는  /home/ubuntu/models로 설정해야 함
 
-- AWS IoT 설정
+## How To test on AWS IoT
 
   [__Subscriptions__]
 
@@ -52,10 +48,10 @@ $ zip -r network.zip *
 
 
 
-## Inference 영상 출력 방법
+## How to see the Infrerence result 
 
-- Flask를 이용하여 inference 영상을 출력
+- This application Output inference image using Flask
 
-- http://[DQ1 IP]:1234 로 접속하여 영상 출력 확인 가능
+- Open browser and access with http://[LG811 AI board IP]:1234 
 
-  ex) DQ1 IP: 192.168.0.9 -> http://192.168.0.9:1234
+  ex) LG 8111 AI Board IP: 192.168.0.9 -> http://192.168.0.9:1234
